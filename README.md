@@ -10,6 +10,7 @@ After runned it,  the browser will download a formatted markdown file. This is a
 2. Open the Chrome Developer Tools console tab.
 3. Paste the code in index.js in console, then press the Enter in keyboard.
 
+##### This a step by step screen recording. Only fetch the first page submissions.
 ![fetch1](https://user-images.githubusercontent.com/1821507/48863702-336f9d00-ee05-11e8-9958-3c98a37568f0.gif)
 
 ## Need to know
