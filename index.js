@@ -1,18 +1,18 @@
-// Available field: title, runtime, url, questionId
-
-// 1. Defind the MD template
-const header = '';
+// 1. Config...
+// Available field: title, runtime, url, questionId.
 const mdTemplate = `
 ### {{questionId}}. [{{title}}]({{url}})
 \`\`\`{{lang}}
 {{code}}
 \`\`\`
 `;
-
-
+const header = '';
+const footer = '';
 const waitTime = 200;
-_.templateSettings.interpolate = /{{([\s\S]+?)}}/g;
+const onlyFetchFirstPage = false;
+// config end
 
+_.templateSettings.interpolate = /{{([\s\S]+?)}}/g;
 async function pause(time) {
   return new Promise((resolve) => { setTimeout(() => { resolve() }, time) });
 }
@@ -23,11 +23,11 @@ async function getSubmission(page) {
   return new Promise((resolve, reject) => {
     $.ajax({
       url: url,
-      success: function(data) {
+      success: function (data) {
         lastkey = data.last_key
         resolve(data);
       },
-      error: function() {
+      error: function () {
         resolve('failed');
       },
     });
@@ -38,10 +38,10 @@ async function getSolution(url) {
   return new Promise((resolve) => {
     $.ajax({
       url: url,
-      success: function(content) {
+      success: function (content) {
         resolve(content);
       },
-      error: function() {
+      error: function () {
         resolve('failed');
       },
     });
@@ -51,7 +51,7 @@ async function getSolution(url) {
 // 2. fetch submisstion
 let lastkey = '';
 const submissions = [];
-for (let i = 0; true ; i++) {
+for (let i = 0; onlyFetchFirstPage ? i < 1 : true; i++) {
   await pause(waitTime);
   let data = await getSubmission(i);
   while (data == 'failed') {
@@ -77,11 +77,11 @@ const accepts = _.chain(submissions)
 // 3. fetch solution
 const solutions = [];
 let start, end, solution, item;
-for(let i = 0; i < accepts.length; i++) {
+for (let i = 0; i < accepts.length; i++) {
   item = accepts[i];
   await pause(waitTime);
   let content = await getSolution(item.url);
-  while(content == 'failed') {
+  while (content == 'failed') {
     await pause(waitTime);
     content = await getSolution(item.url);
   }
@@ -108,6 +108,7 @@ content += _.reduce(solutions, (memo, curr) => {
   memo += compiled(curr) + '\r\n';
   return memo;
 }, '');
+content += footer;
 
 // 5. download
 const saveData = (function () {
