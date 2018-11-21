@@ -16,5 +16,6 @@ After runned it,  the browser will download a formatted markdown file. This is a
 1. The script will retry when the request failed. You don't have stop the script when some request failed with 400.
 (My experience is that a same request may failed more than 50 times. Just retry, it will succeed finally)
 2. You can customize the markdown template, header or footer. You also can dump a JSON file.
-3. If you wanna have a try, set `onlyFetchFirstPage = true`. If you wanna dump all, `onlyFetchFirstPage = false`
+3. If you wanna have a try of the script, set `onlyFetchFirstPage = true`, will only fetch the first page submissions. 
+   If you wanna dump all, `onlyFetchFirstPage = false`
 4. A draft script.. Still need update.
